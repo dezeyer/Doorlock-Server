@@ -16,6 +16,7 @@ ini_set("display_errors","true");
 //require_once("class/page.php");
 //require_once("class/msg.php");
 require_once("class/sqlitedb.php");
+require_once("class/IpCam.php");
 
 require_once("class/chip.php");
 require_once("class/doorclient.php");
@@ -44,7 +45,6 @@ if(($rdc = $db->getDoorClientByID($_GET[$dc])) == null){
 $s = $db->getChipStatusByChipID($_GET[$ch]);
 $r = $db->getChipByChipID($_GET[$ch]);
 if(isset($_GET[$dc]) && $_GET[$ch]){
-    mlog("getChipByChipID");
     if($s == 0){
         rstd(0,"Chip nicht vorhanden.*",$r,$rdc);
     }elseif($s == 1){
@@ -67,12 +67,16 @@ if(isset($_GET[$dc]) && isset($_GET[$lo]) && isset($_GET[$pi])){
  * @param chip $chip
  * @param doorclient $doorclient
  */
-function rstd($code,$msg,$chip = null,$doorclient = null){
+function rstd($code,$msg,$chip = null,$doorclient = null)
+{
     global $db;
-    echo $code."\n".$msg;
-
+    echo $code . "\n" . $msg;
+    $img = "";
+    if ($doorclient != null && $doorclient->getIpcamera() != "") {
+        $img = IpCam::getPicture($doorclient->getIpcamera());
+    }
     if($chip != null){
-        $db->addLog($chip->getDbid(),$doorclient->getDbid(),$code);
+        $db->addLog($chip->getDbid(),$doorclient->getDbid(),$code,$img);
     }
     exit;
 }

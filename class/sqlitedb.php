@@ -127,7 +127,9 @@ class sqlitedb
                 $row["EMail"]
             );
         }
-        return $chips[0];
+        if(isset($chips[0]))
+            return $chips[0];
+        return null;
     }
 
     /**
@@ -160,7 +162,8 @@ class sqlitedb
             $doorclient[] = new doorclient(
                 $row["ID"],
                 $row["DoorID"],
-                $row["Name"]
+                $row["Name"],
+                $row["IpCamera"]
             );
         }
         return $doorclient;
@@ -179,7 +182,8 @@ class sqlitedb
             $doorclient[] = new doorclient(
                 $row["ID"],
                 $row["DoorID"],
-                $row["Name"]
+                $row["Name"],
+                $row["IpCamera"]
             );
         }
         if(isset($doorclient[0]))
@@ -200,7 +204,8 @@ class sqlitedb
             $doorclient[] = new doorclient(
                 $row["ID"],
                 $row["DoorID"],
-                $row["Name"]
+                $row["Name"],
+                $row["IpCamera"]
             );
         }
         return $doorclient[0];
@@ -210,17 +215,19 @@ class sqlitedb
      * @param $doordbid
      * @param $doorid
      * @param $doorname
+     * @param $ipcamera
      */
-    public function updateDoorClient($doordbid,$doorid,$doorname){
-        $this->db->query("UPDATE ".$this->dbDoorClient." SET \"DoorID\" = \"$doorid\", \"Name\" = \"$doorname\" WHERE \"ID\" = '".SQLite3::escapeString($doordbid)."'");
+    public function updateDoorClient($doordbid,$doorid,$doorname,$ipcamera){
+        $this->db->query("UPDATE ".$this->dbDoorClient." SET \"DoorID\" = \"$doorid\", \"Name\" = \"".SQLite3::escapeString($doorname)."\", \"IpCamera\" = \"".SQLite3::escapeString($ipcamera)."\" WHERE \"ID\" = '".SQLite3::escapeString($doordbid)."'");
     }
 
     /**
      * @param $doorid
      * @param $doorname
+     * @param $ipcamera
      */
-    public function addDoorClient($doorid,$doorname){
-        $this->db->query("INSERT INTO ".$this->dbDoorClient." ('ID', 'DoorID', 'Name') VALUES (NULL, '$doorid', '$doorname');");
+    public function addDoorClient($doorid,$doorname,$ipcamera){
+        $this->db->query("INSERT INTO ".$this->dbDoorClient." ('ID', 'DoorID', 'Name', 'IpCamera') VALUES (NULL, '$doorid', '$doorname', '$ipcamera');");
     }
 
     /**
@@ -245,7 +252,8 @@ class sqlitedb
                 $row["Chips"],
                 $row["DoorClient"],
                 $row["status"],
-                $row["timestamp"]
+                $row["timestamp"],
+                $row["picture"]
             );
         }
         return $logs;
@@ -255,8 +263,9 @@ class sqlitedb
      * @param $chipDbId
      * @param $doorClientDbId
      * @param $status
+     * @param $picture
      */
-    public function addLog($chipDbId,$doorClientDbId,$status){
-        $this->db->query("INSERT INTO ".$this->dbLog." ('ID', 'Chips', 'DoorClient','status','timestamp') VALUES (NULL, '$chipDbId', '$doorClientDbId','$status','".time()."');");
+    public function addLog($chipDbId,$doorClientDbId,$status,$picture){
+        $this->db->query("INSERT INTO ".$this->dbLog." ('ID', 'Chips', 'DoorClient','status','timestamp','picture') VALUES (NULL, '$chipDbId', '$doorClientDbId','$status','".time()."','$picture');");
     }
 }

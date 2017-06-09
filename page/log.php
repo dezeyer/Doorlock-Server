@@ -31,6 +31,7 @@
                                     <th>DoorClient-DBID</th>
                                     <th>Status-Code</th>
                                     <th>Timestamp</th>
+                                    <th>Bild</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -45,15 +46,20 @@
                                 foreach($db->getLogs() as $log){?>
                                     <tr>
                                         <td><?echo $log->getDbid()?></td>
-                                        <td><?if(($name = $db->getChipByDBID($log->getChipdbid())->getName()) != ""){
-                                            echo $name;
+                                        <td><?
+                                            $chip = $db->getChipByDBID($log->getChipdbid());
+                                        if($chip == null){
+                                            echo "<strong style='color:orange;'>DELETED: ".$log->getChipdbid()." (Chip-DBID)</strong>";
+                                        }elseif($chip->getName() != ""){
+                                            echo $chip->getName();
                                         }else{
-                                            echo "<strong style='color:red;'>".$db->getChipByDBID($log->getChipdbid())->getChipid()."</strong>";
+                                            echo "<strong style='color:red;'>NO INIT".$db->getChipByDBID($log->getChipdbid())->getChipid()." (Chip-ID)</strong>";
                                         }
                                         ?></td>
                                         <td><?echo $db->getDoorClientByDBID($log->getDoorclientdbid())->getName()?></td>
                                         <td><?echo $status[$log->getStatus()]?></td>
                                         <td><?echo date("Y-m-d H:i:s",$log->getTimestamp())?></td>
+                                        <td><a href="<?echo $log->getPicture()?>"><img height="50" src="<?echo $log->getPicture()?>"</a></td>
                                     </tr>
                                 <?}?>
                             </tbody>

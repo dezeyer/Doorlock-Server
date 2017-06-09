@@ -11,12 +11,14 @@ class doorclient
     public $dbid;
     public $doorid;
     public $name;
+    public $ipcamera;
 
-    function __construct($dbid, $doorid, $name)
+    function __construct($dbid, $doorid, $name, $ipcamera)
     {
         $this->dbid = $dbid;
         $this->doorid = $doorid;
         $this->name = $name;
+        $this->ipcamera = $ipcamera;
     }
 
     /**
@@ -57,5 +59,21 @@ class doorclient
     public function setDoorid($doorid)
     {
         $this->doorid = $doorid;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIpcamera()
+    {
+        return $this->ipcamera;
+    }
+
+    /**
+     * @param mixed $ipcamera
+     */
+    public function setIpcamera($ipcamera)
+    {
+        $this->ipcamera = $ipcamera;
     }
 }

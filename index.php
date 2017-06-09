@@ -13,6 +13,7 @@ require_once("class/login.php");
 require_once("class/page.php");
 require_once("class/msg.php");
 require_once("class/sqlitedb.php");
+require_once("class/IpCam.php");
 
 require_once("class/chip.php");
 require_once("class/doorclient.php");

@@ -13,14 +13,16 @@ class log
     public $doorclientdbid;
     public $status;
     public $timestamp;
+    public $picture;
 
-    function __construct($dbid, $chipdbid, $doorclientdbid, $status, $timestamp)
+    function __construct($dbid, $chipdbid, $doorclientdbid, $status, $timestamp, $picture = "")
     {
         $this->dbid = $dbid;
         $this->chipdbid = $chipdbid;
         $this->doorclientdbid = $doorclientdbid;
         $this->status = $status;
         $this->timestamp = $timestamp;
+        $this->picture = $picture;
     }
 
     /**
@@ -93,5 +95,21 @@ class log
     public function setTimestamp($timestamp)
     {
         $this->timestamp = $timestamp;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPicture()
+    {
+        return $this->picture;
+    }
+
+    /**
+     * @param string $picture
+     */
+    public function setPicture($picture)
+    {
+        $this->picture = $picture;
     }
 }

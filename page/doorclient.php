@@ -20,7 +20,7 @@
         } elseif (trim($_POST["doorname"]) == "") {
             $msg = msg::alert_danger("Tür Name benötigt");
         } else {
-            $db->updateDoorClient($_POST["dbid"], $_POST["doorid"], $_POST["doorname"]);
+            $db->updateDoorClient($_POST["dbid"], $_POST["doorid"], $_POST["doorname"], $_POST["ipcamera"]);
             $msg = msg::alert_success("Tür geändert");
         }
     }
@@ -30,7 +30,7 @@
         }elseif (trim($_POST["doorname"])==""){
             $msg = msg::alert_danger("Tür Name benötigt");
         }else{
-            $db->addDoorClient($_POST["doorid"],$_POST["doorname"]);
+            $db->addDoorClient($_POST["doorid"],$_POST["doorname"], $_POST["ipcamera"]);
             $msg = msg::alert_success("Tür hinzugefügt");
         }
     }
@@ -57,6 +57,7 @@
                                     <th>DB ID</th>
                                     <th>Tür ID</th>
                                     <th>Tür Name</th>
+                                    <th>IP Camera Pfad</th>
                                     <th>Option</th>
                                 </tr>
                                 </thead>
@@ -70,6 +71,7 @@
                                                 <input type="hidden" name="dbid" value="<?echo $doorclient->getDbid()?>"/>
                                                 <td><input class="form-control" name="doorid" value="<?echo $doorclient->getDoorid()?>"/></td>
                                                 <td><input class="form-control" name="doorname" value="<?echo $doorclient->getName()?>"/></td>
+                                                <td><input class="form-control" name="ipcamera" value="<?echo $doorclient->getIpcamera()?>"/></td>
                                                 <td><input class="form-control"  type="submit" name="save" value="Speichern"/></td>
                                             </form>
                                         </tr>
@@ -78,6 +80,7 @@
                                         <td><?echo $doorclient->getDbid()?></td>
                                         <td><?echo $doorclient->getDoorid()?></td>
                                         <td><?echo $doorclient->getName()?></td>
+                                        <td><?echo $doorclient->getIpcamera()?></td>
                                         <td>
                                             <a href="/?p=<?echo $_GET["p"]?>&edit=<?echo $doorclient->getDbid()?>">Editieren</a>
                                             |
@@ -90,6 +93,7 @@
                                         <td></td>
                                         <td><input class="form-control" name="doorid" value=""/></td>
                                         <td><input class="form-control" name="doorname" value=""/></td>
+                                        <td><input class="form-control" name="ipcamera" value=""/></td>
                                         <td><input class="form-control"  type="submit" name="add" value="Hinzufügen"/></td>
                                     </form>
                                 </tr>
@@ -103,6 +107,28 @@
             <!-- /.panel -->
         </div>
         <!-- /.col-lg-12 -->
+    </div>
+    <div class="row">
+        <?foreach ($db->getDoorClients() as $doorClient){
+        if ($doorClient != null && $doorClient->getIpcamera() != "") {
+            //$img = IpCam::getPicture($doorClient->getIpcamera());
+            ?>
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <?echo $doorClient->getName();?>
+                    </div>
+                    <div class="panel-body">
+                        <img width="100%" src="getImage.php?svr=<?echo urlencode($doorClient->getIpcamera())?>"/>
+                    </div>
+                    <div class="panel-footer">
+                        <?echo $doorClient->getIpcamera();?>
+                    </div>
+                </div>
+            </div>
+            <?
+        }
+        }?>
     </div>
 </div>
 
